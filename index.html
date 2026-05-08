@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Galeri Irmanufa</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <i class="fas fa-images"></i>
+          <div>
+            <h1>Galeri Irmanufa</h1>
+            <span>Divisi PDD</span>
+          </div>
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+        <button class="close-sidebar" id="closeSidebar">×</button>
+      </div>
+      <div class="sidebar-menu">
+        <button class="sidebar-item" onclick="location.href = 'index.html'">
+          🏠 Beranda
+        </button>
+        <button class="sidebar-item" onclick="location.href = 'admin.html'">
+          🔒 Admin Panel
+        </button>
+      </div>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="hero">
+      <div class="hero-badge"><span class="dot"></span> Live Update</div>
+      <h2>Arsip <span class="gradient">Kenangan</span></h2>
+      <p>Dokumentasi seluruh kegiatan Irmanufa</p>
+    </div>
+
+    <div class="search-wrapper">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Cari kegiatan..." />
+      </div>
+      <div class="view-buttons">
+        <button class="view-btn active" data-view="grid">
+          <i class="fas fa-th-large"></i>
+        </button>
+        <button class="view-btn" data-view="list">
+          <i class="fas fa-list-ul"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="grid-view" id="gridView"></div>
+      <div class="list-view" id="listView" style="display: none"></div>
+    </div>
+
+    <div class="toast" id="toast">🔄 Data diperbarui!</div>
+
+    <div class="footer">
+      <p>© 2026 Galeri Irmanufa - Divisi PDD</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

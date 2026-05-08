@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Galeri Irmanufa</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="login-modal" id="loginModal">
+      <div class="login-card">
+        <div class="login-icon"><i class="fas fa-user-shield"></i></div>
+        <h3>Login Admin</h3>
+        <p>Masukkan sandi untuk mengelola galeri</p>
+        <input
+          type="password"
+          id="adminPassword"
+          placeholder="Sandi Admin"
+          class="login-input"
+        />
+        <button class="login-btn" onclick="checkPassword()">Masuk</button>
+        <button class="back-home" onclick="location.href = 'index.html'">
+          ← Kembali
+        </button>
+      </div>
+    </div>
+
+    <div id="adminPanel" style="display: none">
+      <div class="admin-header">
+        <div class="admin-header-inner">
+          <div class="admin-logo">
+            <i class="fas fa-user-shield"></i>
+            <div>
+              <h3>Admin Panel</h3>
+              <span>Galeri Irmanufa</span>
+            </div>
+          </div>
+          <div class="admin-actions">
+            <button onclick="exportData()" class="admin-btn">📥</button>
+            <button onclick="logout()" class="admin-btn logout">🚪</button>
+            <a href="index.html" class="admin-btn">👁️</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-container">
+        <div class="admin-card">
+          <h3 id="formTitle">➕ Tambah Kegiatan</h3>
+          <form id="kegiatanForm">
+            <input type="hidden" id="editId" />
+            <div class="form-group">
+              <label>Nama Kegiatan</label>
+              <input
+                type="text"
+                id="namaKegiatan"
+                class="form-input"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Link Google Drive</label>
+              <input type="url" id="linkDrive" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label>Icon (Emoji)</label>
+              <input
+                type="text"
+                id="iconUrl"
+                class="form-input"
+                placeholder="🏆 🕌 🌙 📸"
+              />
+            </div>
+            <div class="form-buttons">
+              <button type="submit" class="btn-primary">💾 Simpan</button>
+              <button type="button" class="btn-secondary" id="cancelBtn">
+                ❌ Batal
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h3>
+            📋 Daftar Kegiatan <span id="totalCount" class="badge">0</span>
+          </h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Icon</th>
+                  <th>Nama</th>
+                  <th>Drive</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="kegiatanList"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js"></script>
+    <script>
+      const PASSWORD = "irmanufa2026";
+
+      function checkPassword() {
+        const pass = document.getElementById("adminPassword").value;
+        if (pass === PASSWORD) {
+          localStorage.setItem("admin_auth", "true");
+          document.getElementById("loginModal").style.display = "none";
+          document.getElementById("adminPanel").style.display = "block";
+          renderAdminTable();
+          setupAdminForm();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Salah!",
+            text: "Sandi tidak sesuai",
+          });
+          document.getElementById("adminPassword").value = "";
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem("admin_auth");
+        document.getElementById("loginModal").style.display = "flex";
+        document.getElementById("adminPanel").style.display = "none";
+        Swal.fire({
+          icon: "success",
+          title: "Logout",
+          text: "Berhasil keluar",
+          timer: 1500,
+        });
+      }
+
+      function exportData() {
+        const data = getData();
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "galeri_backup.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        Swal.fire({
+          icon: "success",
+          title: "Export",
+          text: "Data tersimpan",
+          timer: 1500,
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("admin_auth") === "true") {
+          document.getElementById("loginModal").style.display = "none";
+          document.getElementById("adminPanel").style.display = "block";
+          renderAdminTable();
+          setupAdminForm();
+        }
+        document
+          .getElementById("adminPassword")
+          ?.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") checkPassword();
+          });
+      });
+
+      window.checkPassword = checkPassword;
+      window.logout = logout;
+      window.exportData = exportData;
+    </script>
+  </body>
+</html>
